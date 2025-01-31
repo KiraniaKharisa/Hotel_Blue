@@ -80,8 +80,23 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        Role::find($id)->delete();
+        // Role::find($id)->delete();
 
-        return redirect()->route('roles.index')->with('succes', 'Role data successfully deleted');
+        // return redirect()->route('roles.index')->with('succes', 'Role data successfully deleted');
+
+        try {
+            $role = Role::findOrFail($id);
+    
+            // Cek apakah Role masih digunakan di tabel room lain
+            if ($role->user()->exists()) {
+                return redirect()->route('roles.index')->with('success', 'User role cannot be deleted because it is still associated with users.');
+            }
+    
+            $role->delete();
+    
+            return redirect()->route('roles.index')->with('success', 'Role users successfully deleted.');
+        } catch (\Exception $error) {
+            return redirect()->route('roles.index')->with('success', 'An error occurred while deleting the role.');
+        }
     }
 }

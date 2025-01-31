@@ -66,6 +66,14 @@
                     <span class="text-sm">Back Home</span>
                 </a>
             </li>
+            @can('pengunjung')
+            <li class="mb-2 group">
+                <a href="{{ route('list_room') }}" class="flex items-center py-2 px-4 text-gray-800 hover:bg-gray-800 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-800 group-[.selected]:text-gray-100">
+                    <i class="ri-home-office-fill mr-3 text-lg"></i>
+                    <span class="text-sm">Booking</span>
+                </a>
+            </li>
+            @endcan
             <li class="mb-2 group">
                 <form action="{{route('logout')}}" method="POST" class="flex items-center py-2 px-4 text-gray-800 hover:bg-gray-800 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-800 group-[.selected]:text-gray-100">
                     @csrf

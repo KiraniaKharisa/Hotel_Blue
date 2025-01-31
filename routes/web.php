@@ -20,9 +20,12 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/my_profile', [DashboardController::class, 'myProfile'])->name('my_profile');
     Route::put('/my_profile', [DashboardController::class, 'myProfilePost'])->name('myprofilepost');
-    // Route::get('/booking_room', [DashboardController::class, 'bookingRoom'])->name('booking_room');
+    Route::get('/booking_room', [DashboardController::class, 'bookingRoom'])->name('booking_room');
     Route::get('/dashboard/bookings/{booking}/edit', [BookingController::class, 'edit'])->name('bookings.edit');
     Route::put('/dashboard/bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
+    Route::post('/dashboard/bookings/getprice', [BookingController::class, 'getprice'])->name('getprice');
+    Route::post('/dashboard/bookings/getprice', [BookingController::class, 'getprice'])->name('getprice');
+    Route::delete('/dashboard/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
     
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
@@ -63,14 +66,11 @@ Route::middleware(['auth'])->group(function() {
             'as' => '' // Menghilangkan prefix dari penamaan route
         ])->except(['show']); // show tidak diperlukan
 
-        Route::resource('/dashboard/bookings', BookingController::class, [
-            'as' => '' // Menghilangkan prefix dari penamaan route
-        ])->except(['show', 'create', 'store']); // show tidak diperlukan
+        // Route::resource('/dashboard/bookings', BookingController::class, [
+        //     'as' => '' // Menghilangkan prefix dari penamaan route
+        // ])->except(['show', 'create', 'store']); // show tidak diperlukan
 
         Route::get('/dashboard/bookings', [BookingController::class, 'index'])->name('bookings.index');
-        Route::delete('/dashboard/bookings/{booking}', [BookingController::class, 'destroy'])->name('bookings.destroy');
-
-        Route::post('/dashboard/bookings/getprice', [BookingController::class, 'getprice'])->name('getprice');
 
     });
 });

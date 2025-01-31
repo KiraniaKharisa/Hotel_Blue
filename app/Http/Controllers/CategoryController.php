@@ -86,8 +86,23 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        Category::find($id)->delete();
+        // Category::find($id)->delete();
 
-        return redirect()->route('categories.index')->with('succes', 'Room category data successfully deleted');
+        // return redirect()->route('categories.index')->with('succes', 'Room category data successfully deleted');
+
+        try {
+            $category = Category::findOrFail($id);
+    
+            // Cek apakah kategori masih digunakan di tabel room lain
+            if ($category->room()->exists()) {
+                return redirect()->route('categories.index')->with('success', 'Room category cannot be deleted because it is still associated with rooms.');
+            }
+    
+            $category->delete();
+    
+            return redirect()->route('categories.index')->with('success', 'Room category successfully deleted.');
+        } catch (\Exception $error) {
+            return redirect()->route('categories.index')->with('success', 'An error occurred while deleting the category.');
+        }
     }
 }
