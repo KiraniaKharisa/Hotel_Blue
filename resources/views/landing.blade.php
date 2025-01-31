@@ -195,7 +195,7 @@
                 
                     <!-- Tombol Booking -->
                     <a href="{{ route('bookings.edit', $room->id) }}" class="flex justify-center mt-4 w-full bg-blue-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
-                        Booking Sekarang
+                        Booking Now
                     </a>
                     </div>
                 </div>

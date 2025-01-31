@@ -20,7 +20,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
     Route::get('/my_profile', [DashboardController::class, 'myProfile'])->name('my_profile');
     Route::put('/my_profile', [DashboardController::class, 'myProfilePost'])->name('myprofilepost');
-    Route::get('/booking_room', [DashboardController::class, 'bookingRoom'])->name('booking_room');
+    // Route::get('/booking_room', [DashboardController::class, 'bookingRoom'])->name('booking_room');
     Route::get('/dashboard/bookings/{booking}/edit', [BookingController::class, 'edit'])->name('bookings.edit');
     Route::put('/dashboard/bookings/{booking}', [BookingController::class, 'update'])->name('bookings.update');
     
