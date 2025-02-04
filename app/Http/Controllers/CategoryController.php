@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+
 
 class CategoryController extends Controller
 {
@@ -33,10 +35,16 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+
         $validData = $request->validate([
-            'name' => 'required|max:100',
-            'class_category' => 'required|max:10',
+            'name' => ['required', 'max:100', Rule::unique('categories', 'name')],
+            'class_category' => ['required', 'max:10', 
+                Rule::unique('categories', 'class_category')->where(function ($query) use ($request) {
+                    return $query->whereRaw('LOWER(class_category) = ?', [strtolower($request->class_category)]);
+                }),
+            ],
         ]);
+
 
         $validData['class_category'] = strtoupper($validData['class_category']);
 
@@ -69,14 +77,22 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $category = Category::find($id);
+
         $validData = $request->validate([
-            'name' => 'required|max:100',
-            'class_category' => 'required|max:10',
+            'name' => ['required', 'max:100', 'unique:categories,name,'.$category->id],
+            'class_category' => ['required', 'max:10', 
+                Rule::unique('categories')->where(function ($query) use ($request) {
+                    return $query
+                        ->whereRaw('LOWER(class_category) = ?', [strtolower($request->class_category)])
+                        ->where('id', '!=', $category->id); // Abaikan ID sendiri
+                }),
+            ],
         ]);
 
         $validData['class_category'] = strtoupper($validData['class_category']);
 
-        Category::find($id)->update($validData);
+        $category->update($validData);
 
         return redirect()->route('categories.index')->with('succes', 'Room category data successfully updated');
     }
@@ -95,14 +111,14 @@ class CategoryController extends Controller
     
             // Cek apakah kategori masih digunakan di tabel room lain
             if ($category->room()->exists()) {
-                return redirect()->route('categories.index')->with('success', 'Room category cannot be deleted because it is still associated with rooms.');
+                return redirect()->route('categories.index')->with('error', 'Room category cannot be deleted because it is still associated with rooms.');
             }
     
             $category->delete();
     
-            return redirect()->route('categories.index')->with('success', 'Room category successfully deleted.');
+            return redirect()->route('categories.index')->with('succes', 'Room category successfully deleted.');
         } catch (\Exception $error) {
-            return redirect()->route('categories.index')->with('success', 'An error occurred while deleting the category.');
+            return redirect()->route('categories.index')->with('error', 'An error occurred while deleting the category.');
         }
     }
 }

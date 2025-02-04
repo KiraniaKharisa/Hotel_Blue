@@ -34,7 +34,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $validData = $request->validate([
-            'name' => 'required|max:100',
+            'name' => 'required|max:100|unique:roles',
         ]);
 
         Role::create($validData);
@@ -67,7 +67,7 @@ class RoleController extends Controller
     public function update(Request $request, string $id)
     {
         $validData = $request->validate([
-            'name' => 'required|max:100',
+            'name' => 'required|max:100|unique:roles,name,'. $id,
         ]);
 
         Role::find($id)->update($validData);
@@ -89,14 +89,14 @@ class RoleController extends Controller
     
             // Cek apakah Role masih digunakan di tabel room lain
             if ($role->user()->exists()) {
-                return redirect()->route('roles.index')->with('success', 'User role cannot be deleted because it is still associated with users.');
+                return redirect()->route('roles.index')->with('error', 'User role cannot be deleted because it is still associated with users.');
             }
     
             $role->delete();
     
             return redirect()->route('roles.index')->with('success', 'Role users successfully deleted.');
         } catch (\Exception $error) {
-            return redirect()->route('roles.index')->with('success', 'An error occurred while deleting the role.');
+            return redirect()->route('roles.index')->with('error', 'An error occurred while deleting the role.');
         }
     }
 }

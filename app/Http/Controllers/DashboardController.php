@@ -35,10 +35,24 @@ class DashboardController extends Controller
                 })
                 ->orderByDesc('total_booking')->get();
 
+        // Menentukan pesan jika data tidak ditemukan
+        $message = null;
+
+        if ($rooms->isEmpty()) {
+            if (!empty($name_room) && empty($category)) {
+                $message = "Data Room '$name_room' Tidak Ada";
+            } elseif (empty($name_room) && !empty($category)) {
+                $message = "Data Room Dengan Category '$category' Tidak Ada";
+            } elseif (!empty($name_room) && !empty($category)) {
+                $message = "Data Search Room '$name_room' dengan Category '$categoryName' Tidak Ada";
+            }
+        }
+
         return view('list_room', [
             'title' => "List Room Page",
             'rooms' => $rooms,
             'categories' => Category::all(),
+            'message' => $message,
         ]);
     }
 
@@ -109,11 +123,11 @@ class DashboardController extends Controller
             'title' => "Booking Room",
         ]);
     }
-
+    
     public function history() {
         return view('dashboard/histories/index', [
             'title' => "History Bookings",
             'histories' => History::all(),
-        ]);
+        ]);
     }
 }

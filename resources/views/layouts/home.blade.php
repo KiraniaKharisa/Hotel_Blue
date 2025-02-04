@@ -53,7 +53,7 @@
                             <a href="{{ Route::currentRouteName() !== 'home' ? route('home') : '' }}#galery" class="text-lg font-medium text-slate-700 duration-200 hover:text-blue-600 lg:text-base">Galery</a>
                         </li>
                         <li>
-                            <a href="{{ Route::currentRouteName() !== 'home' ? route('home') : '' }}#room" class="text-lg font-medium text-slate-700 duration-200 hover:text-blue-600 lg:text-base">Room's</a>
+                            <a href="{{ Route::currentRouteName() !== 'home' ? route('home') : '' }}#room" class="text-lg font-medium text-slate-700 duration-200 hover:text-blue-600 lg:text-base">Best Room's</a>
                         </li>
                         <li>
                             <a href="{{ Route::currentRouteName() !== 'home' ? route('home') : '' }}#contact" class="text-lg font-medium text-slate-700 duration-200 hover:text-blue-600 lg:text-base">Contact</a>

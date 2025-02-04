@@ -3,6 +3,7 @@
 @section('container')
 <h3 class="text-xl mb-5 font-bold">Welcome {{ auth()->user()->name }}, {{ auth()->user()->role->name }}</h3>    
 
+@can('admin')
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
     <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
         <div class="flex justify-between mb-6">
@@ -31,6 +32,7 @@
         </div>
     </div>
 </div>
+@endcan
 
 <h3 class="text-xl font-semibold text-gray-800 mb-5">Your Booking's Rooms</h3>
 @if (session()->has('succes'))

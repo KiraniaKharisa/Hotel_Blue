@@ -1,4 +1,4 @@
-@extends('layouts/home')
+@extends('layouts/dashboard/main')
 
 @section('container')
 <section id="room" class="py-16">
@@ -36,33 +36,39 @@
         </div>
         <!-- wrapper -->
         <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-10">
-          @foreach ($rooms as $room)
-                <div class="max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-                    <!-- Gambar -->
-                    <img
-                    class="w-full h-48 object-cover"
-                    src="{{ asset('storage/image/kamar/'.$room->image) }}"
-                    alt="Deskripsi Gambar"
-                    />
-                
-                    <!-- Konten -->
-                    <div class="p-4">
-                    <!-- Judul -->
-                    <h2 class="text-lg font-bold text-gray-800">{{ $room->room }}</h2>
-                
-                    <!-- Kategori -->
-                    <p class="text-sm text-gray-500 mt-1">{{ $room->category->name }}</p>
-                
-                    <!-- Harga -->
-                    <p class="text-xl font-semibold text-green-500 mt-2">Rp {{ number_format($room->price, 0, ',', '.') }}</p>
-                
-                    <!-- Tombol Booking -->
-                    <a href="{{ route('bookings.edit', $room->id) }}" class="flex justify-center mt-4 w-full bg-blue-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
-                        Booking Sekarang
-                    </a>
-                    </div>
-                </div>
+          @if ($rooms->isEmpty())
+              <div class="text-center text-xl text-gray-500 mt-5">
+                  {{ $message ?? 'Tidak ada data kamar tersedia.' }}
+              </div>
+          @else
+            @foreach ($rooms as $room)
+              <div class="max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+                  <!-- Gambar -->
+                  <img
+                  class="w-full h-48 object-cover"
+                  src="{{ asset('storage/image/kamar/'.$room->image) }}"
+                  alt="Deskripsi Gambar"
+                  />
+              
+                  <!-- Konten -->
+                  <div class="p-4">
+                  <!-- Judul -->
+                  <h2 class="text-lg font-bold text-gray-800">{{ $room->room }}</h2>
+              
+                  <!-- Kategori -->
+                  <p class="text-sm text-gray-500 mt-1">{{ $room->category->name }}</p>
+              
+                  <!-- Harga -->
+                  <p class="text-xl font-semibold text-green-500 mt-2">Rp {{ number_format($room->price, 0, ',', '.') }}</p>
+              
+                  <!-- Tombol Booking -->
+                  <a href="{{ route('bookings.edit', $room->id) }}" class="flex justify-center mt-4 w-full bg-blue-500 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200">
+                      Booking Sekarang
+                  </a>
+                  </div>
+              </div>
             @endforeach
+          @endif
         </div>
     </div>
 </section>
